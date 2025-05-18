@@ -16,6 +16,10 @@ function Login() {
     navigate('/');
   };
 
+  const handleLogin = () => {
+    navigate('/upcomingclasses');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add authentication logic here
@@ -89,7 +93,7 @@ function Login() {
             />
           </div>
           
-          <button type="submit" className="login-button">
+          <button type="submit" className="login-button" onClick={handleLogin}>
             Login
           </button>
         </form>

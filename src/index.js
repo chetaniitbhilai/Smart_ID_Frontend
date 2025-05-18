@@ -6,6 +6,8 @@ import App from './App';
 import Login from './pages/Login';
 import reportWebVitals from './reportWebVitals';
 import AttendancePage from './pages/AttendancePage';
+import UpcomingClasses from './pages/UpcomingClasses';
+import Holidays from './pages/Holidays';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +17,8 @@ root.render(
         <Route path="/" element={<App />} />      {/* Main route */}
         <Route path="/login" element={<Login />} /> {/* Login page route */}
         <Route path="/attendancepage" element={<AttendancePage />} /> 
+        <Route path="/upcomingclasses" element={<UpcomingClasses />} />
+        <Route path="/holidays" element={<Holidays />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
