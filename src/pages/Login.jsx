@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import iitLogo from '../assets/iitlogo.png';
-// import buildingsSilhouette from '../assets/buildings-silhouette.png';
 import { IoChevronBackOutline, IoChevronDownOutline } from 'react-icons/io5';
+import useLogin from '../hooks/uselogin'; // Import the custom login hook
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -12,18 +12,27 @@ function Login() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
+  const { login, loading, error } = useLogin();
+
   const handleBack = () => {
     navigate('/');
   };
 
-  const handleLogin = () => {
-    navigate('/upcomingclasses');
-  };
-
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Add authentication logic here
-    console.log('Login attempt:', { role, username, password });
+
+    // if (!role || !username || !password) {
+    //   alert("Please fill in all fields.");
+    //   return;
+    // }
+
+    const result = await login(username, password);
+
+    if (result) {
+
+      // Successful login
+      navigate('/upcomingclasses');
+    }
   };
 
   const selectRole = (selectedRole) => {
@@ -37,7 +46,7 @@ function Login() {
         <button className="back-button" onClick={handleBack}>
           <IoChevronBackOutline />
         </button>
-        
+
         <div className="login-logo-container">
           <img src={iitLogo} alt="IIT Bhilai Logo" className="login-logo" />
           <h1 className="login-title">Login</h1>
@@ -45,29 +54,23 @@ function Login() {
       </div>
 
       <div className="login-form-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           <div className="form-group">
             <label>Select Role</label>
             <div className="dropdown">
-              <div 
-                className="dropdown-header" 
+              <div
+                className="dropdown-header"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <span>{role || 'Select role'}</span>
                 <IoChevronDownOutline className="dropdown-icon" />
               </div>
-              
+
               {isDropdownOpen && (
                 <div className="dropdown-options">
-                  <div className="dropdown-option" onClick={() => selectRole('Student')}>
-                    Student
-                  </div>
-                  <div className="dropdown-option" onClick={() => selectRole('Professor')}>
-                    Professor
-                  </div>
-                  <div className="dropdown-option" onClick={() => selectRole('TA')}>
-                    TA
-                  </div>
+                  <div className="dropdown-option" onClick={() => selectRole('Student')}>Student</div>
+                  <div className="dropdown-option" onClick={() => selectRole('Professor')}>Professor</div>
+                  <div className="dropdown-option" onClick={() => selectRole('TA')}>TA</div>
                 </div>
               )}
             </div>
@@ -80,6 +83,7 @@ function Login() {
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
 
@@ -90,18 +94,17 @@ function Login() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
-          
-          <button type="submit" className="login-button" onClick={handleLogin}>
-            Login
+
+          {error && <p className="error-message">{error}</p>}
+
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>
-
-      {/* <div className="buildings-container">
-        <img src={buildingsSilhouette} alt="Buildings Silhouette" className="buildings-image" />
-      </div> */}
     </div>
   );
 }
