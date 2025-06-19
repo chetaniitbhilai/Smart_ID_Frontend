@@ -25,17 +25,23 @@ console.log(email);
 console.log(password);
 console.log(response);
 
+
+
       if (!response.ok) {
         setError(data.message || 'Login failed');
         return null;
       }
 
       // Optional: store token in localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('role', data.role);
-      localStorage.setItem('username', data.username);
+      // localStorage.setItem('token', data.token);
+      // localStorage.setItem('role', data.role);
+      // localStorage.setItem('username', data.username);
 
+      localStorage.setItem('userId', data._id);
+  console.log(data);
       return data;
+
+    
     } catch (err) {
       setError('Network error');
       return null;

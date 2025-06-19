@@ -2,63 +2,47 @@ import React, { useState, useEffect } from 'react';
 import UpcomingClassesComponent from '../Components/upcomingClassesComponent';
 
 const UpcomingClasses = () => {
-  // This is sample data - in a real app, this would come from your API/backend
-  const [upcomingclassesData, setUpcomingClassesData] = useState([
-    {
-      date: 'Tuesday 21th Jan\' 2025',
-      timeSlot: '12:30 - 1:25 PM',
-      location: 'L101',
-      subject: 'Graph Theory',
-      subjectColor: '#FFA500',
-    },
-    {
-      date: 'Tuesday 21th Jan\' 2025',
-      timeSlot: '12:30 - 1:25 PM',
-      location: 'L101',
-      subject: 'Graph Theory',
-      subjectColor: '#FFA500',
-    },
-    {
-      date: 'Tuesday 21th Jan\' 2025',
-      timeSlot: '12:30 - 1:25 PM',
-      location: 'L101',
-      subject: 'Graph Theory',
-      subjectColor: '#FFA500',
-    },
-    {
-      date: 'Tuesday 22nd Jan\' 2025',
-      timeSlot: '12:30 - 1:25 PM',
-      location: 'L101',
-      subject: 'Graph Theory',
-      subjectColor: '#FFA500',
-    },
-    {
-      date: 'Tuesday 22nd Jan\' 2025',
-      timeSlot: '12:30 - 1:25 PM',
-      location: 'L101',
-      subject: 'Graph Theory',
-      subjectColor: '#FFA500',
-    },
-    {
-      date: 'Tuesday 22nd Jan\' 2025',
-      timeSlot: '12:30 - 1:25 PM',
-      location: 'L101',
-      subject: 'Graph Theory',
-      subjectColor: '#FFA500',
+  const [upcomingclassesData, setUpcomingClassesData] = useState([]);
+
+ useEffect(() => {
+  const fetchCourses = async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error('User ID not found in localStorage');
+      return;
     }
-  ]);
-  
-  // In a real application, you would fetch data from your backend and fetch only those entries whose date is from the present day
-  // This is just a placeholder for how you might do that
-  /*
-  useEffect(() => {
-    // Replace with your actual API endpoint
-    fetch('/api/attendance-history')
-      .then(response => response.json())
-      .then(data => setAttendanceData(data))
-      .catch(error => console.error('Error fetching attendance data:', error));
-  }, []);
-  */
+
+    try {
+      const response = await fetch(`http://localhost:5000/course/get_courses?userId=${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch courses');
+      }
+
+      const formattedCourses = data.map((course, index) => ({
+        date: `Tuesday ${21 + index}th Jan' 2025`,
+        timeSlot: '12:30 - 1:25 PM',
+        location: 'L101',
+        subject: `${course.courseName} (${course.courseCode})`,
+        subjectColor: '#FFA500',
+      }));
+
+      setUpcomingClassesData(formattedCourses);
+    } catch (error) {
+      console.error('Error fetching course data:', error);
+    }
+  };
+
+  fetchCourses();
+}, []);
+
 
   return (
     <div className="attendance-container">
