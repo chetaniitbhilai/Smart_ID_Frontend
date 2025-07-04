@@ -8,6 +8,8 @@ import reportWebVitals from './reportWebVitals';
 import AttendancePage from './pages/AttendancePage';
 import UpcomingClasses from './pages/UpcomingClasses';
 import Holidays from './pages/Holidays';
+import Complaint_TA from './pages/Complain_TA/Complaint_TA';
+import Complaint_Student from './pages/Complain_St/Complaint_Student';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,6 +21,8 @@ root.render(
         <Route path="/attendancepage" element={<AttendancePage />} /> 
         <Route path="/upcomingclasses" element={<UpcomingClasses />} />
         <Route path="/holidays" element={<Holidays />} />
+         <Route path="/complaint_ta" element={<Complaint_TA />} />
+         <Route path="/complaint_student" element={<Complaint_Student/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
